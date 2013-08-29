@@ -13,4 +13,8 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+    #import "BLLog.h"
+    #import "BLStopwatch.h"
+    #import "BLSingleton.h"
 #endif
