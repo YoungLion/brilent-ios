@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BLViewController.h"
 
 @interface BLStartupViewController : BLViewController
 
