@@ -16,13 +16,13 @@
 @property (nonatomic, strong, readonly) NSURLConnection *connection;
 @property (nonatomic, strong, readonly) NSURLRequest *request;
 @property (nonatomic, strong, readonly) NSHTTPURLResponse *response;
-@property (nonatomic, strong, readonly) NSData *receivedData;
+@property (nonatomic, strong, readonly) NSMutableData *receivedData;
 @property (nonatomic, assign) BOOL synchronous;
 @property (nonatomic, assign) int timeout;
 @property (nonatomic, assign) int tag;
 
 - (id)initWithDelegate:(id<BLHttpClientDelegate>)aDelegate;
-- (void)sendRequest:(NSURLRequest *)request;
+- (void)sendRequest:(NSMutableURLRequest *)request;
 - (void)cancel;
 
 @end
