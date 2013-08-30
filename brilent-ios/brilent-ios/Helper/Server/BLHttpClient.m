@@ -183,4 +183,5 @@
         setNetworkActivityIndicator(active);
     }
 }
+
 @end

@@ -25,6 +25,8 @@
 		0D3D740817CDA5C600AD44DC /* BLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D740617CDA5C600AD44DC /* BLViewController.m */; };
 		0D3D741117CDA6F300AD44DC /* BLHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D741017CDA6F300AD44DC /* BLHttpClient.m */; };
 		0D3D741417CDAC4C00AD44DC /* BLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D741317CDAC4C00AD44DC /* BLHelper.m */; };
+		0D90CE3817CFEAA800DD0F56 /* BLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3717CFEAA700DD0F56 /* BLAPI.m */; };
+		0D90CE3E17D015A200DD0F56 /* BLWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3D17D015A200DD0F56 /* BLWeekView.m */; };
 		0DAC162C17CF105300AB0648 /* BLLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC162B17CF105300AB0648 /* BLLog.m */; };
 		0DAC162F17CF159300AB0648 /* BLDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC162E17CF159300AB0648 /* BLDefaults.m */; };
 		0DAC163317CF191900AB0648 /* BLStopwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DAC163217CF191900AB0648 /* BLStopwatch.m */; };
@@ -67,6 +69,10 @@
 		0D3D741017CDA6F300AD44DC /* BLHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHttpClient.m; sourceTree = "<group>"; };
 		0D3D741217CDAC4C00AD44DC /* BLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLHelper.h; sourceTree = "<group>"; };
 		0D3D741317CDAC4C00AD44DC /* BLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHelper.m; sourceTree = "<group>"; };
+		0D90CE3617CFEAA700DD0F56 /* BLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAPI.h; sourceTree = "<group>"; };
+		0D90CE3717CFEAA700DD0F56 /* BLAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAPI.m; sourceTree = "<group>"; };
+		0D90CE3C17D015A200DD0F56 /* BLWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLWeekView.h; sourceTree = "<group>"; };
+		0D90CE3D17D015A200DD0F56 /* BLWeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLWeekView.m; sourceTree = "<group>"; };
 		0DAC162A17CF105300AB0648 /* BLLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLLog.h; sourceTree = "<group>"; };
 		0DAC162B17CF105300AB0648 /* BLLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLLog.m; sourceTree = "<group>"; };
 		0DAC162D17CF159300AB0648 /* BLDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLDefaults.h; sourceTree = "<group>"; };
@@ -197,6 +203,8 @@
 		0D3D740A17CDA5E000AD44DC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0D90CE3C17D015A200DD0F56 /* BLWeekView.h */,
+				0D90CE3D17D015A200DD0F56 /* BLWeekView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -223,6 +231,8 @@
 			children = (
 				0D3D740F17CDA6F300AD44DC /* BLHttpClient.h */,
 				0D3D741017CDA6F300AD44DC /* BLHttpClient.m */,
+				0D90CE3617CFEAA700DD0F56 /* BLAPI.h */,
+				0D90CE3717CFEAA700DD0F56 /* BLAPI.m */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -335,6 +345,8 @@
 				0DAC163317CF191900AB0648 /* BLStopwatch.m in Sources */,
 				0DAC162C17CF105300AB0648 /* BLLog.m in Sources */,
 				0D3D741117CDA6F300AD44DC /* BLHttpClient.m in Sources */,
+				0D90CE3E17D015A200DD0F56 /* BLWeekView.m in Sources */,
+				0D90CE3817CFEAA800DD0F56 /* BLAPI.m in Sources */,
 				0DAC162F17CF159300AB0648 /* BLDefaults.m in Sources */,
 				0D3D73D117CDA20B00AD44DC /* main.m in Sources */,
 				0D3D741417CDAC4C00AD44DC /* BLHelper.m in Sources */,

@@ -17,4 +17,5 @@
     #import "BLLog.h"
     #import "BLStopwatch.h"
     #import "BLSingleton.h"
+    #import "BLHelper.h"
 #endif

@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface BLStopwatch : NSObject
-
++ (BLStopwatch* )instance;
+- (void)start:(NSString *)name;
+- (void)stop:(NSString *)name;
 @end

@@ -29,7 +29,7 @@
 
 @protocol BLHttpClientDelegate <NSObject>
 
-- (void)BLHttpClient:(id)client didReceiveData:(NSData *)data;
-- (void)BLHttpClient:(id)client didFailWithError:(NSError *)error;
+- (void)BLHttpClient:(BLHttpClient *)client didReceiveData:(NSData *)data;
+- (void)BLHttpClient:(BLHttpClient *)client didFailWithError:(NSError *)error;
 
 @end
