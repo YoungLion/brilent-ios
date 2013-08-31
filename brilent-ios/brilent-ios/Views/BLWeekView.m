@@ -10,10 +10,27 @@
 
 #define daysOfWeek @[@"S", @"M", @"T", @"W", @"T", @"F", @"S"]
 
+#define selectedTextColor           [UIColor whiteColor]
+#define selectedNontodayBGColor     [UIColor blackColor]
+#define selectedTodayBGColor        [UIColor redColor]
+#define BGRadius                    15
+#define selectedTextFont            [UIFont fontWithName:@"HelveticaNeue-Medium" size:18]
+#define unselectedWeekdayTextColor  [UIColor blackColor]
+#define unselectedWeekendTextColor  [UIColor lightGrayColor]
+#define unselectedTodayTextColor    [UIColor redColor]
+#define unselectedTextFont          [UIFont fontWithName:@"HelveticaNeue" size:18]
+#define dayOfWeekFont               [UIFont fontWithName:@"HelveticaNeue" size:10]
+#define dayOfWeekdayTextColor       [UIColor blackColor]
+#define dayOfWeekendTextColor       [UIColor lightGrayColor]
+#define dayFormatFont               [UIFont fontWithName:@"HelveticaNeue" size:16]
+
 @interface BLWeekView()
 {
     NSDate *_selectedDay;
+    int _selectedDayOfWeek;
+    NSDate *_firstDay;
 }
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @end
 
 @implementation BLWeekView
@@ -22,60 +39,102 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        _selectedDay = [NSDate date];
+        [self setup];
     }
     return self;
 }
 
-- (void)drawRect:(CGRect)rect
+- (void)awakeFromNib
 {
-    NSDate *start = [_selectedDay dateStartOfWeek];
-    UIFont *labelFont = [UIFont fontWithName:@"HelveticaNeue" size:10];
-    UIFont *weekdayFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
-    UIFont *weekendFont = [UIFont fontWithName:@"HelveticaNeue" size:18];
-    UIFont *highlightColorForToday = [UIFont fontWithName:@"HelveticaNeue" size:18];
-    UIFont *highlightColorForNonToday = [UIFont fontWithName:@"HelveticaNeue" size:18];
-    
-    UIColor *textColor = [UIColor blackColor];
+    [super awakeFromNib];
+    [self setup];
+}
+
+- (void)setup
+{
+    self.backgroundColor = [UIColor clearColor];
+    _selectedDay = [NSDate date];
+    _firstDay = [_selectedDay startDayOfWeekWithCalendar:nil];
+    _selectedDayOfWeek = [_selectedDay dayOfWeek] - 1;
+
     for (int i = 0; i < 7; i++)
     {
-        NSDate *date = [start addDay:i];
-        if ([date isOnSameDayAsDate:_selectedDay withCalendar:nil])
-        {
-            if ([date isOnSameDayAsDate:[NSDate date] withCalendar:nil])
-            {
-                
-            }
-            else
-            {
-                
-            }
-        }
-        else if ([date isOnSameDayAsDate:[NSDate date] withCalendar:nil])
-        {
-            
-        }
-        [self drawString:daysOfWeek[i] font:labelFont color:textColor centeredAt:CGPointMake(320.f/14 + i*320.f/7, 20)];
-        [self drawString:@(date.day).stringValue font:weekdayFont color:textColor centeredAt:CGPointMake(320.f/14 + i*320.f/7, 50)];
+        UIColor *dayOfWeekTextColor;
+        if (i == 0 || i == 6) dayOfWeekTextColor = dayOfWeekendTextColor;
+        else dayOfWeekTextColor = dayOfWeekdayTextColor;
+        [_scrollView drawString:daysOfWeek[i] font:dayOfWeekFont color:dayOfWeekTextColor centeredAt:CGPointMake(320.f/14 + i*320.f/7, 20)];
+        
+        /*UIControl *control = [[UIControl alloc] initWithFrame:CGRectMake(320.f/7*i, 25, 320.f/7, 50)];
+        [control addTarget:self action:@selector(touched:) forControlEvents:UIControlEventTouchUpInside];
+        control.tag = i;
+        [self addSubview:control];*/
     }
 }
 
-- (void)drawString:(NSString *)string
-              font:(UIFont *)font
-             color:(UIColor *)color
-        centeredAt:(CGPoint)center
+- (void)drawRect:(CGRect)rect
 {
-    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:string];
-    NSRange range = NSMakeRange(0, [string length]);
+    UIColor *textColor;
+    UIFont *textFont;
     
-    [attrString addAttribute:NSFontAttributeName value:font range:range];
-    [attrString addAttribute:NSForegroundColorAttributeName value:color range:range];
+    for (int i = 0; i < 7; i++)
+    {
+        UIColor *BGColor = nil;
+        NSDate *date = [_firstDay addDay:i];
+        if ([date isOnSameDayAsDate:_selectedDay withCalendar:nil])
+        {
+            textColor = selectedTextColor;
+            textFont = selectedTextFont;
+            if ([date isOnSameDayAsDate:[NSDate date] withCalendar:nil])
+            {
+                BGColor = selectedTodayBGColor;
+            }
+            else BGColor = selectedNontodayBGColor;
+        }
+        else
+        {
+            textFont = unselectedTextFont;
+            if ([date isOnSameDayAsDate:[NSDate date] withCalendar:nil])
+            {
+                textColor = unselectedTodayTextColor;
+            }
+            else if (i == 0 || i == 6) textColor = unselectedWeekendTextColor;
+            else textColor = unselectedWeekdayTextColor;
+            
+        }
+
+        
+        CGPoint position = CGPointMake(320.f/14 + i*320.f/7, 50);
+        if (BGColor)
+        {
+            [_scrollView drawCircleWithRadius:BGRadius color:BGColor centeredAt:position];
+
+        }
+        [_scrollView drawString:@(date.day).stringValue font:textFont color:textColor centeredAt:position];
+    }
     
-    CGSize size = [attrString size];
-    CGPoint point;
-    point.x = center.x - size.width / 2;
-    point.y = center.y - size.height / 2;
-    [attrString drawAtPoint:point];
+    NSString *dateString = [NSDateFormatter localizedStringFromDate:_selectedDay dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterNoStyle];
+    [self drawString:dateString font:dayFormatFont color:[UIColor blackColor] centeredAt:CGPointMake(CGRectGetMidX(self.bounds), 80)];
+}
+
+- (IBAction)touched:(UIControl *)sender
+{
+    if (_selectedDayOfWeek != sender.tag)
+    {
+        _selectedDayOfWeek = sender.tag;
+        _selectedDay = [_firstDay addDay:_selectedDayOfWeek];
+        [self setNeedsDisplay];
+    }
+}
+
+- (IBAction)showNextWeek
+{
+    _selectedDay = [_selectedDay addDay:-7];
+    _firstDay = [_firstDay addDay:-7];
+}
+
+- (IBAction)showPreviousWeek
+{
+    _selectedDay = [_selectedDay addDay:7];
+    _firstDay = [_firstDay addDay:7];
 }
 @end

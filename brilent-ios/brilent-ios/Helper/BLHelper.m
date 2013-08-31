@@ -119,6 +119,13 @@ void setNetworkActivityIndicator(BOOL active)
     return [components day];
 }
 
+- (int)dayOfWeek
+{
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"e"];
+	return [[formatter stringFromDate:self] integerValue];
+}
+
 - (NSDate *)addDay:(NSInteger)numberOfDays
 {
     NSDateComponents *comp = [[NSDateComponents alloc] init];
@@ -130,49 +137,7 @@ void setNetworkActivityIndicator(BOOL active)
     return [calendar dateByAddingComponents:comp toDate:self options:0];
 }
 
-- (NSDate *)dateStartOfWeek {
-    NSCalendar *gregorian = [[NSCalendar alloc]
-                             initWithCalendarIdentifier:NSGregorianCalendar];
-    [gregorian setFirstWeekday:1]; //monday is first day
-    
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:self];
-    
-    NSDateComponents *componentsToSubtract = [[NSDateComponents alloc] init];
-    [componentsToSubtract setDay: - ((([components weekday] - [gregorian firstWeekday])
-                                      + 7 ) % 7)];
-    NSDate *beginningOfWeek = [gregorian dateByAddingComponents:componentsToSubtract toDate:[NSDate date] options:0];
-    
-    NSDateComponents *componentsStripped = [gregorian components: (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit)
-                                                        fromDate: beginningOfWeek];
-    
-    //gestript
-    beginningOfWeek = [gregorian dateFromComponents: componentsStripped];
-    
-    return beginningOfWeek;
-}
-
-- (NSDate *)dateEndOfWeek {
-    return [[self dateStartOfWeek] addDay:6];
-}
-
-- (BOOL)isOnSameDayAsDate:(NSDate *)otherDate
-                 withCalendar:(NSCalendar *)calendar
-{
-    NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    NSDate *selfFloored = [self floorDayWithCalendar:cal];
-    NSDate *otherDateFloored = [otherDate floorDayWithCalendar:cal];
-    
-    NSDateComponents *separatingComponents = [cal components:(NSDayCalendarUnit
-                                                              )
-                                                    fromDate:otherDateFloored
-                                                      toDate:selfFloored
-                                                     options:0
-                                              ];
-    return (separatingComponents.day == 0);
-    
-}
-
-- (NSDate *)floorDayWithCalendar:(NSCalendar *)calendar
+- (NSDate *)startOfDayWithCalendar:(NSCalendar *)calendar
 {
     NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *comps = [cal components:(NSEraCalendarUnit
@@ -184,6 +149,82 @@ void setNetworkActivityIndicator(BOOL active)
     
     NSDate *result = [cal dateFromComponents:comps];
     return result;
+}
+
+- (NSDate *)startDayOfWeekWithCalendar:(NSCalendar *)calendar
+{
+    NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *result = [self startOfDayWithCalendar:cal];
+    
+    // if this is not a Sunday, go back one day
+    NSDateComponents *negativeOneDay = [[NSDateComponents alloc] init];
+    [negativeOneDay setDay:-1];
+    
+    NSDateComponents *comps = [cal components:NSWeekdayCalendarUnit fromDate:result];
+    while ( comps.weekday > 1 )
+    {
+        result = [cal dateByAddingComponents:negativeOneDay
+                                      toDate:result
+                                     options:0];
+        comps = [cal components:NSWeekdayCalendarUnit fromDate:result];
+    }
+    
+    return result;
+}
+
+- (NSDate *)endDayOfWeekWithCalendar:(NSCalendar *)calendar
+{
+    return [[self startDayOfWeekWithCalendar:calendar] addDay:6];
+}
+
+- (BOOL)isOnSameDayAsDate:(NSDate *)otherDate
+                 withCalendar:(NSCalendar *)calendar
+{
+    NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDate *selfFloored = [self startOfDayWithCalendar:cal];
+    NSDate *otherDateFloored = [otherDate startOfDayWithCalendar:cal];
+    
+    NSDateComponents *separatingComponents = [cal components:(NSDayCalendarUnit
+                                                              )
+                                                    fromDate:otherDateFloored
+                                                      toDate:selfFloored
+                                                     options:0
+                                              ];
+    return (separatingComponents.day == 0);
+    
+}
+
+@end
+
+@implementation UIView (BLHelper)
+
+- (void)drawString:(NSString *)string
+              font:(UIFont *)font
+             color:(UIColor *)color
+        centeredAt:(CGPoint)center
+{
+    NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:string];
+    NSRange range = NSMakeRange(0, [string length]);
+    
+    [attrString addAttribute:NSFontAttributeName value:font range:range];
+    [attrString addAttribute:NSForegroundColorAttributeName value:color range:range];
+    
+    CGSize size = [attrString size];
+    CGPoint point;
+    point.x = center.x - size.width / 2;
+    point.y = center.y - size.height / 2;
+    [attrString drawAtPoint:point];
+}
+
+- (void)drawCircleWithRadius:(CGFloat)r
+                       color:(UIColor *)color
+                  centeredAt:(CGPoint)center
+{
+    CGRect rect = CGRectMake(center.x - r, center.y - r, 2*r, 2*r);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextAddEllipseInRect(ctx, rect);
+    CGContextSetFillColorWithColor(ctx, [color CGColor]);
+    CGContextFillPath(ctx);
 }
 
 @end

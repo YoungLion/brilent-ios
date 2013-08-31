@@ -35,10 +35,22 @@ void setNetworkActivityIndicator(BOOL active);
 - (int)year;
 - (int)month;
 - (int)day;
+- (int)dayOfWeek;
 - (NSDate *)addDay:(NSInteger)numberOfDays;
-- (NSDate *)dateStartOfWeek;
-- (NSDate *)dateEndOfWeek;
+- (NSDate *)startOfDayWithCalendar:(NSCalendar *)calendar;
+- (NSDate *)startDayOfWeekWithCalendar:(NSCalendar *)calendar;
+- (NSDate *)endDayOfWeekWithCalendar:(NSCalendar *)calendar;
 - (BOOL)isOnSameDayAsDate:(NSDate *)otherDate
              withCalendar:(NSCalendar *)calendar;
-- (NSDate *)floorDayWithCalendar:(NSCalendar *)calendar;
+@end
+
+@interface UIView (BLHelper)
+- (void)drawString:(NSString *)string
+              font:(UIFont *)font
+             color:(UIColor *)color
+        centeredAt:(CGPoint)center;
+
+- (void)drawCircleWithRadius:(CGFloat)r
+                       color:(UIColor *)color
+                  centeredAt:(CGPoint)center;
 @end
