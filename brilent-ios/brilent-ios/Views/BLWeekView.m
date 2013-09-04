@@ -40,15 +40,6 @@
 
 @implementation BLWeekView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self setup];
-    }
-    return self;
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];

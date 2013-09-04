@@ -10,4 +10,6 @@
 
 @interface BLDayView : UIScrollView
 
+@property (nonatomic, strong) NSMutableArray *events;
+
 @end
