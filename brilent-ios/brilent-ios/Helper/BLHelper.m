@@ -203,17 +203,17 @@ void setNetworkActivityIndicator(BOOL active)
              color:(UIColor *)color
         centeredAt:(CGPoint)center
 {
+    UILabel *label = [UILabel new];
     NSMutableAttributedString* attrString = [[NSMutableAttributedString alloc] initWithString:string];
     NSRange range = NSMakeRange(0, [string length]);
     
     [attrString addAttribute:NSFontAttributeName value:font range:range];
     [attrString addAttribute:NSForegroundColorAttributeName value:color range:range];
     
-    CGSize size = [attrString size];
-    CGPoint point;
-    point.x = center.x - size.width / 2;
-    point.y = center.y - size.height / 2;
-    [attrString drawAtPoint:point];
+    label.attributedText = attrString;
+    [label sizeToFit];
+    label.center = center;
+    [self addSubview:label];
 }
 
 - (void)drawCircleWithRadius:(CGFloat)r
@@ -227,4 +227,42 @@ void setNetworkActivityIndicator(BOOL active)
     CGContextFillPath(ctx);
 }
 
+@end
+
+@implementation UIImage (BLHelper)
+
++ (UIImage *)circleImageWithDiameter:(CGFloat)diameter
+                          edgeInsets:(UIEdgeInsets)edgeInsets
+                               color:(UIColor *)color
+                     backgroundColor:(UIColor *)backgroundColor
+{
+    CGRect imageRect = CGRectMake(0.0f, 0.0f, diameter + edgeInsets.left + edgeInsets.right, diameter + edgeInsets.top + edgeInsets.bottom);
+    UIGraphicsBeginImageContextWithOptions(imageRect.size, NO, 0.0f);
+    
+    if ( backgroundColor )
+    {
+        [backgroundColor setFill];
+        UIRectFill(imageRect);
+    }
+    
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    if ( color )
+    {
+        [color setFill];
+        CGRect circleRect = CGRectMake(edgeInsets.left, edgeInsets.top, diameter, diameter);
+        CGContextFillEllipseInRect(ctx, circleRect);
+    }
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+@end
+
+@implementation UIColor (BLHelper)
++ (UIColor *)lightlightGrayColor
+{
+    return [UIColor colorWithRed:227.f/255.f green:227.f/255.f blue:227.f/255.f alpha:1];
+}
 @end

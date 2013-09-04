@@ -54,3 +54,14 @@ void setNetworkActivityIndicator(BOOL active);
                        color:(UIColor *)color
                   centeredAt:(CGPoint)center;
 @end
+
+@interface UIImage (BLHelper)
++ (UIImage *)circleImageWithDiameter:(CGFloat)diameter
+                          edgeInsets:(UIEdgeInsets)edgeInsets
+                               color:(UIColor *)color
+                     backgroundColor:(UIColor *)backgroundColor;
+@end
+
+@interface UIColor (BLHelper)
++ (UIColor *)lightlightGrayColor;
+@end

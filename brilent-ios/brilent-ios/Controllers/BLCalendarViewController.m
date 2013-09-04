@@ -37,4 +37,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)locateToday:(UIBarButtonItem *)sender {
+    [self.weekView locateToday];
+}
+
 @end

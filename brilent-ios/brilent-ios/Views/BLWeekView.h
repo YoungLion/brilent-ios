@@ -10,4 +10,6 @@
 
 @interface BLWeekView : UIView
 
+- (void)locateToday;
+- (void)locateDay:(NSDate *)day;
 @end
