@@ -54,15 +54,25 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbs-3M-ebp" customClass="BLDayView">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s2S-Ze-ev8" customClass="BLDayViewContainer">
                                 <rect key="frame" x="0.0" y="141" width="320" height="383"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </scrollView>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" directionalLockEnabled="YES" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMD-9y-Gca">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="383"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="scrollView" destination="oMD-9y-Gca" id="l6q-P7-i0s"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="dayView" destination="lbs-3M-ebp" id="hZz-Ps-VRp"/>
+                        <outlet property="dayViewContainer" destination="s2S-Ze-ev8" id="unL-wU-fqz"/>
                         <outlet property="weekView" destination="C6L-2D-211" id="FyT-ND-VzU"/>
                     </connections>
                 </viewController>

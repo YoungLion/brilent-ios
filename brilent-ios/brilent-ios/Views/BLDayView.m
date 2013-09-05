@@ -8,6 +8,7 @@
 
 #import "BLDayView.h"
 #import "BLEvent.h"
+#import "BLEventLabel.h"
 
 #define kTopMargin              5
 #define kBottomMargin           20
@@ -26,6 +27,16 @@
 
 @implementation BLDayView
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setup];
+        _eventLabels = [NSMutableArray new];
+    }
+    return self;
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -35,20 +46,21 @@
 
 - (void)setup
 {
-    BLLog(@"intersect: %d", CGRectIntersectsRect(CGRectMake(0, 0, 1, 1), CGRectMake(0, 1, 1, 1)));
     self.contentSize = CGSizeMake(self.frame.size.width, kHourlySpacing * 24);
     self.contentInset = UIEdgeInsetsMake(kTopMargin, 0, kBottomMargin, 0);
+    self.directionalLockEnabled = YES;
+    self.alwaysBounceHorizontal = NO;
     for (int i = 0; i <= 24; i++) {
         UILabel *label = [UILabel new];
         label.text = [self textForHour:i];
         label.font = kHourFont;
         [label sizeToFit];
         CGRect rect = label.frame;
-        rect.origin = CGPointMake(kHourLabelRightEdgeX - rect.size.width, i * kHourlySpacing);
+        rect.origin = CGPointMake(kHourLabelRightEdgeX - rect.size.width, kHourlySpacing*i - rect.size.height/2);
         label.frame = rect;
         [self addSubview:label];
         
-        UIView *hourMark = [[UIView alloc] initWithFrame:CGRectMake(kHourLabelRightEdgeX + kMarginX, CGRectGetMidY(rect), kDayTableWidth, 1)];
+        UIView *hourMark = [[UIView alloc] initWithFrame:CGRectMake(kHourLabelRightEdgeX + kMarginX, kHourlySpacing*i, kDayTableWidth, 1)];
         hourMark.backgroundColor = [UIColor lightlightGrayColor];
         [self addSubview:hourMark];
     }
@@ -65,8 +77,35 @@
     }
 }
 
+- (void)setDate:(NSDate *)date
+{
+    _date = date;
+    
+    BLEvent *e1 = [BLEvent new];
+    e1.start = [NSDate dateWithTimeInterval:arc4random()%24 * 3600 sinceDate:[[NSDate date] startOfDayWithCalendar:nil]];
+    e1.end = [NSDate dateWithTimeInterval:60*60 sinceDate:e1.start];
+    e1.title = @"Event 1";
+    e1.type = @"a";
+    
+    BLEvent *e2 = [BLEvent new];
+    e2.start = [NSDate dateWithTimeInterval:arc4random()%24 * 3600 sinceDate:[[NSDate date] startOfDayWithCalendar:nil]];
+    e2.end = [NSDate dateWithTimeInterval:60*60 sinceDate:e2.start];
+    e2.title = @"Event 2";
+    e2.type = @"c";
+    
+    BLEvent *e3 = [BLEvent new];
+    e3.start = [NSDate dateWithTimeInterval:arc4random()%24 * 3600 sinceDate:[[NSDate date] startOfDayWithCalendar:nil]];
+    e3.end = [NSDate dateWithTimeInterval:60*60 sinceDate:e3.start];
+    e3.title = @"Event 3";
+    e3.type = @"r";
+
+    self.events = [NSMutableArray arrayWithArray:@[e1, e2, e3]];
+}
+
 - (void)setEvents:(NSMutableArray *)events
 {
+    for (UIView *v in _eventLabels) [v removeFromSuperview];
+    [_eventLabels removeAllObjects];
     _events = events;
     for (BLEvent *event in events) [self drawEvent:event];
 }
@@ -79,15 +118,13 @@
 
 - (void)drawEvent:(BLEvent *)event
 {
-    UILabel *label = [UILabel new];
-    label.backgroundColor = [self colorFromEventType:event.type];
-    label.alpha = 0.5;
-    label.text = event.title;
     NSTimeInterval day = 3600 * 24;
     NSTimeInterval start = [event.start timeIntervalSinceDate:[event.start startOfDayWithCalendar:nil]];
     NSTimeInterval duration = [event.end timeIntervalSinceDate:event.start];
-    label.frame = CGRectMake(kHourLabelRightEdgeX + kMarginX, start/day*kDayTableHeight, kDayTableWidth, duration/day*kDayTableHeight);
-    
+    BLEventLabel *label = [[BLEventLabel alloc] initWithFrame:CGRectMake(kHourLabelRightEdgeX + kMarginX, start/day*kDayTableHeight, kDayTableWidth, duration/day*kDayTableHeight)];
+    label.event = event;
+    [label addTarget:self action:@selector(eventTapped:) forControlEvents:UIControlEventTouchUpInside];
+
     NSMutableArray *labelsToRedraw = [NSMutableArray new];
     for (UILabel *eLabel in _eventLabels) {
         if (CGRectIntersectsRect(label.frame, eLabel.frame)) {
@@ -101,27 +138,21 @@
         else if (l1.frame.origin.x == l2.frame.origin.x) return NSOrderedSame;
         else return NSOrderedDescending;
     }];
-    CGFloat width = kDayTableWidth/(labelsToRedraw.count+1);
-    for (int i = 0; i < labelsToRedraw.count; i++) {
-        UILabel *l = labelsToRedraw[i];
-        l.frame = CGRectMake(kHourLabelRightEdgeX + kMarginX + i * width, l.frame.origin.y, width, l.frame.size.height);
+    if (labelsToRedraw.count) {
+        CGFloat width = kDayTableWidth/(labelsToRedraw.count+1);
+        for (int i = 0; i < labelsToRedraw.count; i++) {
+            UILabel *l = labelsToRedraw[i];
+            l.frame = CGRectMake(kHourLabelRightEdgeX + kMarginX + i * width, l.frame.origin.y, width, l.frame.size.height);
+        }
+        label.frame = CGRectMake(kHourLabelRightEdgeX + kMarginX + labelsToRedraw.count * width, label.frame.origin.y, width, label.frame.size.height);
     }
-    label.frame = CGRectMake(kHourLabelRightEdgeX + kMarginX + labelsToRedraw.count * width, label.frame.origin.y, width, label.frame.size.height);
     [_eventLabels addObject:label];
     [self addSubview:label];
 }
 
-- (UIColor *)colorFromEventType:(NSString *)type
+- (void)eventTapped:(BLEventLabel *)sender
 {
-    if ([type isEqualToString:@"a"]) {
-        return [UIColor greenColor];
-    } else if ([type isEqualToString:@"r"]) {
-        return [UIColor lightGrayColor];
-    } else if ([type isEqualToString:@"c"]) {
-        return [UIColor blueColor];
-    } else {
-        return [UIColor purpleColor];
-    }
+    [_blDelegate dayView:self tappedOnEvent:sender.event];
 }
 
 @end

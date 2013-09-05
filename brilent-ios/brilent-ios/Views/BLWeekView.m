@@ -151,11 +151,7 @@
 - (IBAction)touched:(UIButton *)sender
 {
     if (_selectedDayOfWeek != (sender.tag - kDayButtonTagBase) % 7) {
-        UIButton *button = (UIButton *)[self viewWithTag: kDayButtonTagBase + _selectedDayOfWeek + 7];
-        NSDate *previousSelectedDay = _selectedDay;
         self.selectedDay = [_firstDay addDay:sender.tag - kDayButtonTagBase];
-        [self configureButton:button forDate:previousSelectedDay animated:YES];
-        [self configureButton:sender forDate:_selectedDay animated:NO];
     }
 }
 
@@ -193,21 +189,42 @@
 
 - (void)locateToday
 {
-    [self locateDay:[NSDate date]];
+    NSDate *today = [[NSDate date] startOfDayWithCalendar:nil];
+    NSTimeInterval timeDiff = [today timeIntervalSinceDate:[_selectedDay startOfDayWithCalendar:nil]];
+    if (timeDiff == 0) {
+        UIButton *button = (UIButton *)[self viewWithTag: kDayButtonTagBase + _selectedDayOfWeek + 7];
+        [button pulseAnimationforKey:@"pulse button" repeatCount:1 withDuration:0.2 toValue:1.2];
+    }
+    else {
+        [self locateDay:[NSDate date]];
+    }
 }
 
 #pragma mark - Private
 
 - (void)setSelectedDay:(NSDate *)selectedDay
 {
-    NSTimeInterval timeDiff = [selectedDay timeIntervalSinceDate:_selectedDay];
-    _selectedDay = selectedDay;
-    _selectedDayOfWeek = selectedDay.dayOfWeek - 1;
-    [self setDateLabelText:[NSDateFormatter localizedStringFromDate:_selectedDay dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterNoStyle] fadeInFromLeft:timeDiff < 0];
-    NSDate *newFirstDay = [self firstDayOfLastWeekFromDate:_selectedDay];
-    if (![_firstDay isEqualToDate:newFirstDay]) {
-        _firstDay = newFirstDay;
-        [self configureWeeks];
+    NSTimeInterval timeDiff = [[selectedDay startOfDayWithCalendar:nil] timeIntervalSinceDate:[_selectedDay startOfDayWithCalendar:nil]];
+    if (timeDiff != 0)
+    {
+        NSDate *previousSelectedDay = _selectedDay;
+        int previousSelectedDayOfWeek = _selectedDayOfWeek;
+        _selectedDay = selectedDay;
+        
+        [_delegate weekView:self didSelectDate:_selectedDay];
+        _selectedDayOfWeek = selectedDay.dayOfWeek - 1;
+        
+        [self setDateLabelText:[NSDateFormatter localizedStringFromDate:_selectedDay dateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterNoStyle] fadeInFromLeft:timeDiff < 0];
+        NSDate *newFirstDay = [self firstDayOfLastWeekFromDate:_selectedDay];
+        if (![_firstDay isEqualToDate:newFirstDay]) {
+            _firstDay = newFirstDay;
+            [self configureWeeks];
+        }
+        
+        UIButton *buttonToRelease = (UIButton *)[self viewWithTag: kDayButtonTagBase + previousSelectedDayOfWeek + 7];
+        UIButton *buttonToPress = (UIButton *)[self viewWithTag: kDayButtonTagBase + _selectedDayOfWeek + 7];
+        [self configureButton:buttonToRelease forDate:previousSelectedDay animated:previousSelectedDayOfWeek != _selectedDayOfWeek];
+        [self configureButton:buttonToPress forDate:_selectedDay animated:NO];
     }
 }
 
@@ -246,12 +263,12 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (_scrollView.contentOffset.x < _scrollView.frame.size.width ) {
-        [scrollView setContentOffset:CGPointMake(_scrollView.frame.size.width, 0) animated:NO];
         self.selectedDay = [_selectedDay addDay:-7];
-    }
-    else if ( _scrollView.contentOffset.x >= 2 *  _scrollView.frame.size.width ) {
         [scrollView setContentOffset:CGPointMake(_scrollView.frame.size.width, 0) animated:NO];
+    }
+    else if (_scrollView.contentOffset.x >= 2 *  _scrollView.frame.size.width ) {
         self.selectedDay = [_selectedDay addDay:7];
+        [scrollView setContentOffset:CGPointMake(_scrollView.frame.size.width, 0) animated:NO];
     }
 }
 
@@ -267,7 +284,7 @@
             _shouldManuallySetDayAfterScroll = NO;
         }
     }
-    else if ( _scrollView.contentOffset.x >= 2 *  _scrollView.frame.size.width  ) {
+    else if (_scrollView.contentOffset.x >= 2 *  _scrollView.frame.size.width  ) {
         [scrollView setContentOffset:CGPointMake(_scrollView.frame.size.width, 0) animated:NO];
         if (!_shouldManuallySetDayAfterScroll) {
             self.selectedDay = [_selectedDay addDay:7];

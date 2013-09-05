@@ -7,9 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol BLWeekViewDelegate;
 
 @interface BLWeekView : UIView
 
 - (void)locateToday;
 - (void)locateDay:(NSDate *)day;
+@property (nonatomic, weak) id<BLWeekViewDelegate> delegate;
+@end
+
+@protocol BLWeekViewDelegate <NSObject>
+
+- (void)weekView:(BLWeekView *)weekView didSelectDate:(NSDate *)date;
+
 @end

@@ -8,12 +8,12 @@
 
 #import "BLCalendarViewController.h"
 #import "BLWeekView.h"
-#import "BLDayView.h"
+#import "BLDayViewContainer.h"
 #import "BLEvent.h"
 
-@interface BLCalendarViewController ()
+@interface BLCalendarViewController () <BLDayViewDelegate, BLWeekViewDelegate, BLDayViewContainerDelegate>
 @property (weak, nonatomic) IBOutlet BLWeekView *weekView;
-@property (weak, nonatomic) IBOutlet BLDayView *dayView;
+@property (weak, nonatomic) IBOutlet BLDayViewContainer *dayViewContainer;
 
 @end
 
@@ -23,7 +23,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -31,25 +30,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    BLEvent *e1 = [BLEvent new];
-    e1.start = [NSDate dateWithTimeIntervalSinceNow:-40*60];
-    e1.end = [NSDate dateWithTimeIntervalSinceNow:60*60];
-    e1.title = @"Event 1";
-    e1.type = @"a";
     
-    BLEvent *e2 = [BLEvent new];
-    e2.start = [NSDate dateWithTimeIntervalSinceNow:-60*60];
-    e2.end = [NSDate dateWithTimeIntervalSinceNow:0];
-    e2.title = @"Event 2";
-    e2.type = @"c";
-    
-    BLEvent *e3 = [BLEvent new];
-    e3.start = [NSDate dateWithTimeIntervalSinceNow:-60*60];
-    e3.end = [NSDate dateWithTimeIntervalSinceNow:-41*60];
-    e3.title = @"Event 3";
-    e3.type = @"r";
-    
-	self.dayView.events = [NSMutableArray arrayWithArray:@[e1, e2, e3]];
+	[self.dayViewContainer setDate:[NSDate date] animated:NO];
+    self.dayViewContainer.delegate = self;
+    self.dayViewContainer.currentDayView.blDelegate = self;
+    self.weekView.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,5 +51,27 @@
 - (IBAction)locateToday:(UIBarButtonItem *)sender {
     [self.weekView locateToday];
 }
+
+#pragma mark - BLDayView Delegate
+
+- (void)dayView:(BLDayView *)dayView tappedOnEvent:(BLEvent *)event
+{
+    BLLog(@"event tapped: %@ %@ ~ %@", event.title, event.start, event.end);
+}
+
+#pragma mark - BLDayViewContainer Delegate
+
+- (void)dayViewContainer:(BLDayViewContainer *)dayViewContainer didChangeToDate:(NSDate *)date
+{
+    [self.weekView locateDay:date];
+}
+
+#pragma mark - BLWeekView Delegate
+
+- (void)weekView:(BLWeekView *)weekView didSelectDate:(NSDate *)date
+{
+    [self.dayViewContainer setDate:date animated:YES];
+}
+
 
 @end

@@ -227,6 +227,19 @@ void setNetworkActivityIndicator(BOOL active)
     CGContextFillPath(ctx);
 }
 
+- (void)pulseAnimationforKey:(NSString *)key repeatCount:(int)repeatCount withDuration:(CFTimeInterval)duration toValue:(float)toValue
+{
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    
+    animation.duration = duration;
+    animation.toValue = [NSNumber numberWithFloat:toValue];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.autoreverses = YES;
+    animation.repeatCount = repeatCount;
+    
+    [self.layer addAnimation:animation forKey:key];
+}
+
 @end
 
 @implementation UIImage (BLHelper)

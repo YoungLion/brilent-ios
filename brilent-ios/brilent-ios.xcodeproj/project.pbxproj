@@ -25,6 +25,10 @@
 		0D3D740817CDA5C600AD44DC /* BLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D740617CDA5C600AD44DC /* BLViewController.m */; };
 		0D3D741117CDA6F300AD44DC /* BLHttpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D741017CDA6F300AD44DC /* BLHttpClient.m */; };
 		0D3D741417CDAC4C00AD44DC /* BLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D3D741317CDAC4C00AD44DC /* BLHelper.m */; };
+		0D7EAFDB17D8FDA500116CE7 /* BLDayViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7EAFDA17D8FDA500116CE7 /* BLDayViewContainer.m */; };
+		0D7EAFDE17D9282D00116CE7 /* BLEventLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7EAFDD17D9282D00116CE7 /* BLEventLabel.m */; };
+		0D7EAFE017D942A900116CE7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7EAFDF17D942A900116CE7 /* QuartzCore.framework */; };
+		0D7EAFE217D942B000116CE7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7EAFE117D942B000116CE7 /* CoreData.framework */; };
 		0D90CE3817CFEAA800DD0F56 /* BLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3717CFEAA700DD0F56 /* BLAPI.m */; };
 		0D90CE3E17D015A200DD0F56 /* BLWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3D17D015A200DD0F56 /* BLWeekView.m */; };
 		0D90CE4117D1225C00DD0F56 /* BLCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE4017D1225C00DD0F56 /* BLCalendarViewController.m */; };
@@ -72,6 +76,12 @@
 		0D3D741017CDA6F300AD44DC /* BLHttpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHttpClient.m; sourceTree = "<group>"; };
 		0D3D741217CDAC4C00AD44DC /* BLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLHelper.h; sourceTree = "<group>"; };
 		0D3D741317CDAC4C00AD44DC /* BLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLHelper.m; sourceTree = "<group>"; };
+		0D7EAFD917D8FDA500116CE7 /* BLDayViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLDayViewContainer.h; sourceTree = "<group>"; };
+		0D7EAFDA17D8FDA500116CE7 /* BLDayViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLDayViewContainer.m; sourceTree = "<group>"; };
+		0D7EAFDC17D9282D00116CE7 /* BLEventLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLEventLabel.h; sourceTree = "<group>"; };
+		0D7EAFDD17D9282D00116CE7 /* BLEventLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEventLabel.m; sourceTree = "<group>"; };
+		0D7EAFDF17D942A900116CE7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		0D7EAFE117D942B000116CE7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		0D90CE3617CFEAA700DD0F56 /* BLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAPI.h; sourceTree = "<group>"; };
 		0D90CE3717CFEAA700DD0F56 /* BLAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAPI.m; sourceTree = "<group>"; };
 		0D90CE3C17D015A200DD0F56 /* BLWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLWeekView.h; sourceTree = "<group>"; };
@@ -96,6 +106,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D7EAFE217D942B000116CE7 /* CoreData.framework in Frameworks */,
+				0D7EAFE017D942A900116CE7 /* QuartzCore.framework in Frameworks */,
 				0D3D73C717CDA20B00AD44DC /* CoreGraphics.framework in Frameworks */,
 				0D3D73C917CDA20B00AD44DC /* UIKit.framework in Frameworks */,
 				0D3D73C517CDA20B00AD44DC /* Foundation.framework in Frameworks */,
@@ -137,6 +149,8 @@
 		0D3D73C317CDA20B00AD44DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D7EAFE117D942B000116CE7 /* CoreData.framework */,
+				0D7EAFDF17D942A900116CE7 /* QuartzCore.framework */,
 				0D3D73C417CDA20B00AD44DC /* Foundation.framework */,
 				0D3D73C617CDA20B00AD44DC /* CoreGraphics.framework */,
 				0D3D73C817CDA20B00AD44DC /* UIKit.framework */,
@@ -220,6 +234,10 @@
 				0D90CE3D17D015A200DD0F56 /* BLWeekView.m */,
 				0D90CE4217D6B15600DD0F56 /* BLDayView.h */,
 				0D90CE4317D6B15600DD0F56 /* BLDayView.m */,
+				0D7EAFD917D8FDA500116CE7 /* BLDayViewContainer.h */,
+				0D7EAFDA17D8FDA500116CE7 /* BLDayViewContainer.m */,
+				0D7EAFDC17D9282D00116CE7 /* BLEventLabel.h */,
+				0D7EAFDD17D9282D00116CE7 /* BLEventLabel.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -361,7 +379,9 @@
 				0DAC162C17CF105300AB0648 /* BLLog.m in Sources */,
 				0D3D741117CDA6F300AD44DC /* BLHttpClient.m in Sources */,
 				0D90CE3E17D015A200DD0F56 /* BLWeekView.m in Sources */,
+				0D7EAFDB17D8FDA500116CE7 /* BLDayViewContainer.m in Sources */,
 				0D90CE3817CFEAA800DD0F56 /* BLAPI.m in Sources */,
+				0D7EAFDE17D9282D00116CE7 /* BLEventLabel.m in Sources */,
 				0D90CE4117D1225C00DD0F56 /* BLCalendarViewController.m in Sources */,
 				0DAC162F17CF159300AB0648 /* BLDefaults.m in Sources */,
 				0D90CE4717D6BD4700DD0F56 /* BLEvent.m in Sources */,

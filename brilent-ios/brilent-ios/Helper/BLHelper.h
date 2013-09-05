@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 brilent. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface BLHelper : NSObject
 
@@ -49,10 +49,10 @@ void setNetworkActivityIndicator(BOOL active);
               font:(UIFont *)font
              color:(UIColor *)color
         centeredAt:(CGPoint)center;
-
 - (void)drawCircleWithRadius:(CGFloat)r
                        color:(UIColor *)color
                   centeredAt:(CGPoint)center;
+- (void)pulseAnimationforKey:(NSString *)key repeatCount:(int)repeatCount withDuration:(CFTimeInterval)duration toValue:(float)toValue;
 @end
 
 @interface UIImage (BLHelper)
