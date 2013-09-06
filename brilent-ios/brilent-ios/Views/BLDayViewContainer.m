@@ -36,6 +36,7 @@
     _leftDayView = [[BLDayView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     [_scrollView addSubview:_leftDayView];
     _currentDayView = [[BLDayView alloc] initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
+    [_currentDayView setDate:[NSDate date]];
     [_scrollView addSubview:_currentDayView];
     _rightDayView = [[BLDayView alloc] initWithFrame:CGRectMake(self.frame.size.width*2, 0, self.frame.size.width, self.frame.size.height)];
     [_scrollView addSubview:_rightDayView];

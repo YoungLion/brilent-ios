@@ -29,6 +29,7 @@
 		0D7EAFDE17D9282D00116CE7 /* BLEventLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7EAFDD17D9282D00116CE7 /* BLEventLabel.m */; };
 		0D7EAFE017D942A900116CE7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7EAFDF17D942A900116CE7 /* QuartzCore.framework */; };
 		0D7EAFE217D942B000116CE7 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7EAFE117D942B000116CE7 /* CoreData.framework */; };
+		0D7EAFE517DA489E00116CE7 /* BLTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D7EAFE417DA489E00116CE7 /* BLTimer.m */; };
 		0D90CE3817CFEAA800DD0F56 /* BLAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3717CFEAA700DD0F56 /* BLAPI.m */; };
 		0D90CE3E17D015A200DD0F56 /* BLWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE3D17D015A200DD0F56 /* BLWeekView.m */; };
 		0D90CE4117D1225C00DD0F56 /* BLCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D90CE4017D1225C00DD0F56 /* BLCalendarViewController.m */; };
@@ -82,6 +83,8 @@
 		0D7EAFDD17D9282D00116CE7 /* BLEventLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLEventLabel.m; sourceTree = "<group>"; };
 		0D7EAFDF17D942A900116CE7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		0D7EAFE117D942B000116CE7 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		0D7EAFE317DA489E00116CE7 /* BLTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLTimer.h; sourceTree = "<group>"; };
+		0D7EAFE417DA489E00116CE7 /* BLTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLTimer.m; sourceTree = "<group>"; };
 		0D90CE3617CFEAA700DD0F56 /* BLAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLAPI.h; sourceTree = "<group>"; };
 		0D90CE3717CFEAA700DD0F56 /* BLAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLAPI.m; sourceTree = "<group>"; };
 		0D90CE3C17D015A200DD0F56 /* BLWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLWeekView.h; sourceTree = "<group>"; };
@@ -255,6 +258,8 @@
 				0DAC163017CF160000AB0648 /* BLSingleton.h */,
 				0DAC163117CF191900AB0648 /* BLStopwatch.h */,
 				0DAC163217CF191900AB0648 /* BLStopwatch.m */,
+				0D7EAFE317DA489E00116CE7 /* BLTimer.h */,
+				0D7EAFE417DA489E00116CE7 /* BLTimer.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				0DAC162F17CF159300AB0648 /* BLDefaults.m in Sources */,
 				0D90CE4717D6BD4700DD0F56 /* BLEvent.m in Sources */,
 				0D90CE4417D6B15600DD0F56 /* BLDayView.m in Sources */,
+				0D7EAFE517DA489E00116CE7 /* BLTimer.m in Sources */,
 				0D3D73D117CDA20B00AD44DC /* main.m in Sources */,
 				0D3D741417CDAC4C00AD44DC /* BLHelper.m in Sources */,
 			);

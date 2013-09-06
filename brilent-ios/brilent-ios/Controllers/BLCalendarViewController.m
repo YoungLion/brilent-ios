@@ -31,7 +31,6 @@
 {
     [super viewDidLoad];
     
-	[self.dayViewContainer setDate:[NSDate date] animated:NO];
     self.dayViewContainer.delegate = self;
     self.dayViewContainer.currentDayView.blDelegate = self;
     self.weekView.delegate = self;
