@@ -137,6 +137,22 @@ void setNetworkActivityIndicator(BOOL active)
     return [calendar dateByAddingComponents:comp toDate:self options:0];
 }
 
+- (NSDate *)startOfMinuteWithCalendar:(NSCalendar *)calendar
+{
+    NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps = [cal components:(NSEraCalendarUnit
+                                               | NSYearCalendarUnit
+                                               | NSMonthCalendarUnit
+                                               | NSDayCalendarUnit
+                                               | NSHourCalendarUnit
+                                               | NSMinuteCalendarUnit
+                                               )
+                                     fromDate:self];
+    
+    NSDate *result = [cal dateFromComponents:comps];
+    return result;
+}
+
 - (NSDate *)startOfDayWithCalendar:(NSCalendar *)calendar
 {
     NSCalendar *cal = calendar ? calendar : [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

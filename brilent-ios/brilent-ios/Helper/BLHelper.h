@@ -37,6 +37,7 @@ void setNetworkActivityIndicator(BOOL active);
 - (int)day;
 - (int)dayOfWeek;
 - (NSDate *)addDay:(NSInteger)numberOfDays;
+- (NSDate *)startOfMinuteWithCalendar:(NSCalendar *)calendar;
 - (NSDate *)startOfDayWithCalendar:(NSCalendar *)calendar;
 - (NSDate *)startDayOfWeekWithCalendar:(NSCalendar *)calendar;
 - (NSDate *)endDayOfWeekWithCalendar:(NSCalendar *)calendar;

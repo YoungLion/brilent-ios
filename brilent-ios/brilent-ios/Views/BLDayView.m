@@ -21,8 +21,11 @@
 @interface BLDayView()
 {
     NSMutableArray *_eventLabels;
+    dispatch_source_t _clockTimer;
+    UIView *_currentTimeMark;
+    UILabel *_currentTimeLabel;
 }
-
+@property (nonatomic, strong) NSDate *currentTime;
 @end
 
 @implementation BLDayView
@@ -41,11 +44,11 @@
 {
     [super awakeFromNib];
     [self setup];
-    _eventLabels = [NSMutableArray new];
 }
 
 - (void)setup
 {
+    _eventLabels = [NSMutableArray new];
     self.contentSize = CGSizeMake(self.frame.size.width, kHourlySpacing * 24);
     self.contentInset = UIEdgeInsetsMake(kTopMargin, 0, kBottomMargin, 0);
     self.directionalLockEnabled = YES;
@@ -64,6 +67,42 @@
         hourMark.backgroundColor = [UIColor lightlightGrayColor];
         [self addSubview:hourMark];
     }
+    
+    _currentTimeMark = [UIView new];
+    _currentTimeMark.backgroundColor = [UIColor redColor];
+    [self addSubview:_currentTimeMark];
+    _currentTimeLabel = [UILabel new];
+    _currentTimeLabel.textColor = [UIColor redColor];
+    _currentTimeLabel.font = kHourFont;
+    [self addSubview:_currentTimeLabel];
+    [self setCurrentTime:[NSDate date]];
+    
+    _clockTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    struct timespec initialFireTimespec;
+    NSTimeInterval timeIntervalSince1970 = [[[NSDate date] startOfMinuteWithCalendar:nil] timeIntervalSince1970];
+    NSTimeInterval integralPart = 0.0;
+    NSTimeInterval fractionalPart = modf(timeIntervalSince1970, &integralPart);
+    initialFireTimespec.tv_sec = integralPart;
+    initialFireTimespec.tv_nsec = fractionalPart * NSEC_PER_SEC;
+    dispatch_time_t initialDispatchTime = dispatch_walltime(&initialFireTimespec, 0);
+    dispatch_source_set_timer(_clockTimer,
+                              initialDispatchTime,
+                              60 * NSEC_PER_SEC,
+                              0);
+    dispatch_source_set_event_handler(_clockTimer, ^{
+        [self setCurrentTime:[NSDate date]];
+    });
+}
+
+- (void)setCurrentTime:(NSDate *)currentTime
+{
+    _currentTime = currentTime;
+    NSTimeInterval day = 3600 * 24;
+    NSTimeInterval t = [currentTime timeIntervalSinceDate:[currentTime startOfDayWithCalendar:nil]];
+    _currentTimeMark.frame = CGRectMake(kHourLabelRightEdgeX + 1, t/day*kDayTableHeight, self.frame.size.width - kHourLabelRightEdgeX - 1, 1);
+    _currentTimeLabel.text = [NSDateFormatter localizedStringFromDate:currentTime dateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle];
+    [_currentTimeLabel sizeToFit];
+    _currentTimeLabel.frame = CGRectMake(kHourLabelRightEdgeX - _currentTimeLabel.frame.size.width, _currentTimeMark.frame.origin.y - _currentTimeLabel.frame.size.height / 2, _currentTimeLabel.frame.size.width, _currentTimeLabel.frame.size.height);
 }
 
 - (NSString *)textForHour:(int)h
