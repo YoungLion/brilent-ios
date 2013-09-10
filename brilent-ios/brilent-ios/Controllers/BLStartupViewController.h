@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "BLViewController.h"
+#import "OAuthLoginView.h"
+#import "JSONKit.h"
+#import "OAConsumer.h"
+#import "OAMutableURLRequest.h"
+#import "OADataFetcher.h"
+#import "OATokenManager.h"
 
 @interface BLStartupViewController : BLViewController
+
+@property (nonatomic, retain) OAuthLoginView *oAuthLoginView;
 
 @end

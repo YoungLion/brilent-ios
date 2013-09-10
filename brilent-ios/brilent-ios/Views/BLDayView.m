@@ -16,7 +16,7 @@
 #define kHourlySpacing          50
 #define kHourLabelRightEdgeX    50
 #define kHourFont               [UIFont fontWithName:@"HelveticaNeue" size:12]
-#define kCurrentTimeFont        [UIFont fontWithName:@"HelveticaNeue-Bold" size:10]
+#define kCurrentTimeFont        [UIFont fontWithName:@"HelveticaNeue" size:11]
 #define kMarginX                10
 #define kDayTableWidth          (self.bounds.size.width - kHourLabelRightEdgeX - kMarginX)
 #define kDayTableHeight         (kHourlySpacing * 24)
@@ -61,6 +61,11 @@
     if ([date isOnSameDayAsDate:[NSDate date] withCalendar:nil]) {
         _currentTimeLabel.hidden = NO;
         _currentTimeMark.hidden = NO;
+        double delayInSeconds = 1.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self scrollToCurrentHour];
+        });
     } else {
         _currentTimeLabel.hidden = YES;
         _currentTimeMark.hidden = YES;
@@ -139,9 +144,6 @@
     [self addSubview:_currentTimeLabel];
     [self setCurrentTime:[NSDate date]];
     
-    
-    
-    
     __weak BLDayView *weakSelf = self;
     _clockTimer = [[BLTimer alloc] initWithInitialFireDate:[[[NSDate date] startOfMinuteWithCalendar:nil] dateByAddingTimeInterval:60]
                                                          repeatInterval:60.0
@@ -162,6 +164,14 @@
     [_currentTimeLabel sizeToFit];
     _currentTimeLabel.frame = CGRectMake(kHourLabelRightEdgeX - _currentTimeLabel.frame.size.width, _currentTimeMark.frame.origin.y - _currentTimeLabel.frame.size.height / 2, _currentTimeLabel.frame.size.width, _currentTimeLabel.frame.size.height);
     [self updateHourLabels];
+}
+
+- (void)scrollToCurrentHour
+{
+    NSTimeInterval day = 3600 * 24;
+    NSTimeInterval t = [[[NSDate date] startOfHourWithCalendar:nil] timeIntervalSinceDate:[[NSDate date] startOfDayWithCalendar:nil]];
+    CGFloat y = t/day*kDayTableHeight - kTopMargin;
+    [self setContentOffset:CGPointMake(0, y) animated:YES];
 }
 
 - (void)updateHourLabels
